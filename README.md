@@ -49,8 +49,11 @@ Binary and Multi classifiers have been used for the classification purpose after
 
 The machine learning models used for both kinds of classifiers along with the performance metrics are shown in the following tables. ResNet50V2 turned out to be the best binary classifier as per it's prediction performance. Whereas, Xception outperformed all models for four class classification.
 
+<div align = "center">
 
 <img width="894" alt="Screenshot 2022-07-21 at 3 32 23 PM" src="https://user-images.githubusercontent.com/86565759/180300321-7078bf73-eb3d-4eb8-ba54-cbc1b1109fc0.png">
+  
+</div>
 
 Finally, Xception model has been deployed as a web application using Streamlit. The application allows user to upload the images and it correctly predicts it's class.
 
