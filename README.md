@@ -22,13 +22,16 @@ The following open source packages have been used in the project :
 COVIDx-US is an open access benchmark dataset of ultrasound imaging related to COVID-19. 192 lung ultrasound videos and 18,628 images have been extracted from 8 sources - GrepMed (20 videos) , PocusAtlas (32 videos), Clarius (6 videos) , LITFL (63 videos), CoreUltrasound (18 videos) , Radiopaedia (5 videos), Papers (22 videos), UF (26 videos).The videos have been captured with either of the two probes - Convex or Linear.The images belong to four classes namely Covid, Normal, Pneumonia and Other.
 
 The following table contains the image distribution by class -
-
+<div align="center">
+  
 Class | Number of Images 
 :---: | :---: 
 COVID | 4003
 Normal | 2201
 Pneumonia | 4449
 Other | 7975
+  
+</div>
 
 
 *The COVIDx-US dataset details can be found at [here](https://github.com/nrc-cnrc/COVID-US)*
