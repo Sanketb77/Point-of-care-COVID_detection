@@ -37,6 +37,10 @@ Other | 7975
 
 Binary and Multi classifiers have been used for the classification purpose after pre-processing the image dataset. Data preprocessing includes resizing the images to handle dimension variability, normalizing pixel values, removing the duplicate images from each class and storing the images in RGB format. The binary classifiers take two classes into consideration : COVID and Non-Covid. However, the multi classifiers works with all the four classes.
 
+### Results and Discussion
+
+The machine learning models used for both kinds of classifiers along with the performance metrics are shown in the following tables. ResNet50V2 turned out to be the best binary classifier as per it's prediction performance. Whereas, Xception outperformed all models for four class classification.
+
 
 
 
