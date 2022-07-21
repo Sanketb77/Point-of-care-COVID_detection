@@ -33,9 +33,9 @@ Other | 7975
 
 *The COVIDx-US dataset details can be found at [here](https://github.com/nrc-cnrc/COVID-US)*
 
+### Roadmap
 
-
-
+Binary and Multi classifiers have been used for the classification purpose after pre-processing the image dataset. Data preprocessing includes resizing the images to handle dimension variability, normalizing pixel values, removing the duplicate images from each class and storing the images in RGB format. The binary classifiers take two classes into consideration : COVID and Non-Covid. However, the multi classifiers works with all the four classes.
 
 
 
