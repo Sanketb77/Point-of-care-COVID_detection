@@ -31,7 +31,12 @@ Normal | 2201
 Pneumonia | 4449
 Other | 7975
   
+
+
+<img width="839" alt="Screenshot 2022-07-21 at 3 58 18 PM" src="https://user-images.githubusercontent.com/86565759/180304457-718d7844-aadf-48aa-9647-882d79217a9f.png">
+  
 </div>
+
 
 
 *The COVIDx-US dataset details can be found at [here](https://github.com/nrc-cnrc/COVID-US)*
