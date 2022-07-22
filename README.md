@@ -1,5 +1,11 @@
 ## Using Lung ultrasound images for building a reliable Point-of-care COVID-19 testing system
 
+<div align = 'center'>
+
+![antibodies-medium](https://user-images.githubusercontent.com/86565759/180339435-94d68b97-7239-4b33-833e-e7b654dc82a1.png)
+
+</div>
+
 ### About the Project
 This project aims to develop a quick and reliable Point-of-care Covid diagnosis system that returns the results instantly.A machine learning based diagnosis system can be developed that classifies patients into right category of results – Positive or Negative using their lung ultrasound images. Such a model would help the healthcare professionals by saving a great deal of their time as the classification model would return the results momentarily. Moreover, the final deployed model’s promising accuracy would save the trouble of conducting a series of follow up tests. The solution would change the clinical decision support as this would not only save care providers and patients from unnecessary delays and waiting times but will also enable healthcare professionals to take the necessary actions timely.
 
