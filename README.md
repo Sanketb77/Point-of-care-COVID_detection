@@ -1,4 +1,8 @@
+<div align = 'center'>
+
 # Using Lung ultrasound images for building a reliable Point-of-care COVID-19 testing system
+
+</div>
 
 <div align = 'center'>
 
