@@ -8,11 +8,11 @@
 
 ## Table of Contents
 
-1. [About the project](https://github.com/Sanketb77/Point-of-care-COVID_detection/edit/main/README.md#about-the-project)
-2. [Pre-requisites](https://github.com/Sanketb77/Point-of-care-COVID_detection/edit/main/README.md#pre-requisites)
-3. [Dataset](https://github.com/Sanketb77/Point-of-care-COVID_detection/edit/main/README.md#dataset)
-4. [Roadmap](https://github.com/Sanketb77/Point-of-care-COVID_detection/edit/main/README.md#roadmap)
-5. [Results and Discussion](https://github.com/Sanketb77/Point-of-care-COVID_detection/edit/main/README.md#results-and-discussion)
+1. [About the project](https://github.com/Sanketb77/Point-of-care-COVID_detection/blob/main/README.md#about-the-project)
+2. [Pre-requisites](https://github.com/Sanketb77/Point-of-care-COVID_detection/blob/main/README.md#pre-requisites)
+3. [Dataset](https://github.com/Sanketb77/Point-of-care-COVID_detection/blob/main/README.md#dataset)
+4. [Roadmap](https://github.com/Sanketb77/Point-of-care-COVID_detection/blob/main/README.md#roadmap)
+5. [Results and Discussion](https://github.com/Sanketb77/Point-of-care-COVID_detection/blob/main/README.md#results-and-discussion)
 
 
 <img align="left" width="60" height="60" src = https://user-images.githubusercontent.com/86565759/180340694-dcfa2013-6d04-4cbc-a5ff-ff99ea3f864f.jpeg >
