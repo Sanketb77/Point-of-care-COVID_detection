@@ -22,7 +22,7 @@ This project aims to develop a quick and reliable Point-of-care Covid diagnosis 
 
 The goal is compare and evaluate the performance of different convolutional neural networks in combination with Transfer learning and other approaches for choosing a highly accurate model for deployment.
 
-<img align="left" width="60" height="60" src=https://user-images.githubusercontent.com/86565759/180341113-b84cb9df-48d7-47f5-bfa9-ee582e1f1d7c.png>
+<img align="left" width="40" height="40" src=https://user-images.githubusercontent.com/86565759/180341113-b84cb9df-48d7-47f5-bfa9-ee582e1f1d7c.png>
 
 ## Pre-requisites
 The following open source packages have been used in the project :
@@ -37,7 +37,9 @@ The following open source packages have been used in the project :
 * Matplotlib
 * Imbalanced-Learn
 
-### Dataset
+<img align="left" width="60" height="60" src= https://user-images.githubusercontent.com/86565759/180341438-e48f955c-f57c-412d-a11b-c3715e0f8fa0.png>
+
+## Dataset
 COVIDx-US is an open access benchmark dataset of ultrasound imaging related to COVID-19. 192 lung ultrasound videos and 18,628 images have been extracted from 8 sources - GrepMed (20 videos) , PocusAtlas (32 videos), Clarius (6 videos) , LITFL (63 videos), CoreUltrasound (18 videos) , Radiopaedia (5 videos), Papers (22 videos), UF (26 videos).The videos have been captured with either of the two probes - Convex or Linear.The images belong to four classes namely Covid, Normal, Pneumonia and Other.
 
 The following table contains the image distribution by class -
@@ -60,11 +62,15 @@ Other | 7975
 
 *The COVIDx-US dataset details can be found at [here](https://github.com/nrc-cnrc/COVID-US)*
 
-### Roadmap
+<img align="left" width="60" height="60" src= https://user-images.githubusercontent.com/86565759/180341674-a136fb61-a24d-45a0-8cd7-ba38e246b914.png>
+
+## Roadmap
 
 Binary and Multi classifiers have been used for the classification purpose after pre-processing the image dataset. Data preprocessing includes resizing the images to handle dimension variability, normalizing pixel values, removing the duplicate images from each class and storing the images in RGB format. The binary classifiers take two classes into consideration : COVID and Non-Covid. However, the multi classifiers works with all the four classes.
 
-### Results and Discussion
+<img align="left" width="60" height="60" src= https://user-images.githubusercontent.com/86565759/180341784-34ef882d-c8ce-41ae-bec1-d21619046795.jpg>
+
+## Results and Discussion
 
 The machine learning models used for both kinds of classifiers along with the performance metrics are shown in the following tables. ResNet50V2 turned out to be the best binary classifier as per it's prediction performance. Whereas, Xception outperformed all models for four class classification.
 
