@@ -6,6 +6,8 @@
 
 </div>
 
+<img align="left" width="40" height="40" src = https://user-images.githubusercontent.com/86565759/180346595-fc1b1854-37cf-487a-8b2a-e96a4f410788.png >
+
 ## Table of Contents
 
 1. [About the project](https://github.com/Sanketb77/Point-of-care-COVID_detection/blob/main/README.md#about-the-project)
