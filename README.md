@@ -1,4 +1,4 @@
-## Using Lung ultrasound images for building a reliable Point-of-care COVID-19 testing system
+# Using Lung ultrasound images for building a reliable Point-of-care COVID-19 testing system
 
 <div align = 'center'>
 
@@ -6,8 +6,13 @@
 
 </div>
 
-### About the Project
+
+<img align="left" width="60" height="60" src = https://user-images.githubusercontent.com/86565759/180340694-dcfa2013-6d04-4cbc-a5ff-ff99ea3f864f.jpeg >
+
+## About the Project
+
 This project aims to develop a quick and reliable Point-of-care Covid diagnosis system that returns the results instantly.A machine learning based diagnosis system can be developed that classifies patients into right category of results – Positive or Negative using their lung ultrasound images. Such a model would help the healthcare professionals by saving a great deal of their time as the classification model would return the results momentarily. Moreover, the final deployed model’s promising accuracy would save the trouble of conducting a series of follow up tests. The solution would change the clinical decision support as this would not only save care providers and patients from unnecessary delays and waiting times but will also enable healthcare professionals to take the necessary actions timely.
+
 
 <div align = 'center'>
 
@@ -17,7 +22,9 @@ This project aims to develop a quick and reliable Point-of-care Covid diagnosis 
 
 The goal is compare and evaluate the performance of different convolutional neural networks in combination with Transfer learning and other approaches for choosing a highly accurate model for deployment.
 
-### Pre-requisites
+<img align="left" width="60" height="60" src=https://user-images.githubusercontent.com/86565759/180341113-b84cb9df-48d7-47f5-bfa9-ee582e1f1d7c.png>
+
+## Pre-requisites
 The following open source packages have been used in the project :
 
 * Numpy
