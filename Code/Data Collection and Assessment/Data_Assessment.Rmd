@@ -1,0 +1,473 @@
+---
+title: "Data Assessment"
+author: "Group - 10"
+output: html_document
+---
+
+## Project Title : - Using Lung ultrasound images for building a reliable Point-of-care Covid-19 testing system
+
+```{r, include=FALSE}
+ library(dataReporter)
+ library(pointblank)
+ library(tidyverse)
+ library(here)
+ library(stringr) 
+ library(plotly)
+ 
+```
+
+
+**'image_details' is a dataframe we made, consisting of names of all images extracted and their respective dimensions.We'll have a look at it to understand the image dataset we have at hand.**
+
+```{r}
+# Loading the image_details dataframe
+ 
+ image_details <- read_csv('image_details.csv')
+```
+
+```{r}
+# Let's have a look at it's content
+    head(image_details)
+```
+
+```{r}
+  nrow(image_details)
+```
+**The above output shows that we have extracted over 18K images using the data scraping script available. However, we'd like to spend some time extracting more images for the project work, since the model performance directly depends on the amount of data we get to train our model on.**
+
+**The first column 'image_name' contains significant information about the image like the source it has been extracted from, the probe, the class it belongs to. It'd be useful to get these details to get a better picture of the image dataset.**
+
+
+```{r}
+
+#Splitting the name column by delimiter '_'
+
+  image_details[c('X', 'Source','Class', 'Probe', 'X1')] <- str_split_fixed(image_details$image_name, '_', 5)
+ 
+  # Rearrange columns and remove original name column
+  image_details <- image_details[c('X1','Source','Class', 'Probe','width','height')]
+ 
+  #Renaming the first column
+  
+ names(image_details)[names(image_details) == "X1"] <- "image"
+```
+
+```{r}
+head(image_details)
+```
+
+**This dataframe can be looked at as the image metadata containing information about the images extracted that make up for our actual dataset.**
+
+## Assessment for data quality
+
+### Identifying issues in all of the columns
+
+```{r}
+#Checking every column to identify any issues
+
+  check(image_details)
+```
+
+**-> The above output shows that there are no missing values for any of the records, we do have the information about source, class, probe, dimensions of all images. The same is necessary as we need to use this information to understand proportion of images in all classes, sources we have been able to extract images from and the dimension irregularities among images in the dataset. **
+
+**-> Regarding the dimensions, there are some images with width values identified as outliers i.e. they have exceptionally less or high width than most of images in our dataset.**
+
+**-> Same is the case in terms of height, but there is only one identified outlier, an image with height dimension value way less than the rest.**
+
+**-> It is a useful observation, we'd have to make sure all images to be used for model creation and training have the same dimensios. The same will be taken care of during data pre-processing.**
+
+### Conducting validation test for image metadata details
+
+**The following validation tests are being conducted on the metadata :-**
+
+**-> Does the class variable contain - covid, normal, pneumonia, other as the possible categories ?**
+
+**-> Does the probe variable consists of two possible values - Linear, convex?**
+
+**-> Does the height values lie between 140 and 1000?**
+
+**-> Does the width values lie between 150 and 1000?**
+
+```{r}
+  agent <- 
+  create_agent(
+    tbl = image_details,
+    tbl_name = "Image metadata",
+    label = "Validation test"
+  ) %>%
+  col_vals_in_set(vars(Class), set = c("covid", "normal", "pneumonia","other")) %>%
+  col_vals_in_set(vars(Probe), set = c("linear","convex")) %>%
+  col_vals_between(vars(width), left = 150, right = 1500) %>%
+  col_vals_between(vars(width), left = 140, right = 1000) %>%
+  interrogate()
+```
+
+**The interrogation returns every step to be 'OK' but it'd be helpful to see the agent report.**
+
+```{r}
+agent
+```
+
+**The report shows that the data passes the first two evaluation tests but not the following two.**
+
+```{r}
+ get_data_extracts(agent)
+```
+
+**The output above shows all the image records that have height and width dimensions beyond the range we specified. Let's have a look at the dataframe summary to check the same.**
+
+### Table summary
+
+```{r}
+ #Checking summary of the entire image metadata
+  summary(image_details)
+```
+
+**-> Class and probe are character values we we'd have anticipated. Width and height represent image dimensions and they are numerical, we are able to see the distribution of these values in different quartiles. We can clearly note that the maximum width for the images extracted is over 1900, whereas the height is over 1300, both of these are outside of the range we checked for in the validation test.**
+
+## Assessment for data fitness
+
+```{r}
+   image_details %>% summarize(n())
+```
+**The image dataset has 18628 images, the number is good to get started with. But as per the project objective, the focus is to get a highly accurate COVID-19 prediction model, an important aspect for achieving the performance that satisfies the success criteria is that, the model must be trained on a much bigger set of images than we have now. The more the model gets to learn from, the better. So, we'd work on extracting more images, the dataset right now is not the best possible fit for our objective.**
+
+
+```{r}
+ image_details %>% group_by(Source) %>% summarize(n())
+```
+
+**The above output shows the number of images we have been able to extract from every source, there were 9 different data sources, we extracted lung ultrasound videos from. However, the output shows we have not been able to get any images from 'Butterfly Network'. The 35 videos from this source would have added a good number of images to the dataset. Moreover, Clarius and Radiopaedia contribute very less to the image dataset as compared to others. In order to have a dataset that works great for our modelling part, we must focus on extracting more images from these sources.**
+
+```{r}
+ image_details %>% group_by(Class) %>% summarize(n())
+```
+
+**The dataset has lung ultrasound images with every image belonging to one of the four cases : Covid positive, normal, pneumonia and others. The above code cell represents the number of images our dataset has for all these classes.**
+
+```{r}
+ g <- image_details %>%
+  group_by(Class) %>%
+  summarise(cnt = n()) %>%
+  mutate(freq = (cnt / sum(cnt))*100) %>% 
+  arrange(desc(freq))
+
+g
+```
+**The class imbalance is pretty evident from the output above.The first class Covid has around 4000 images, which is a good number but in comparison to other classes, it might not be very suitable for the intended purpose. We wish to train our model to be capable of distinguishing between lung ultrasound images of COVID positive patients and those having none or other lung conditions. So, it'd make sense to provide it with a good number of images from each class with comparable numbers.**
+
+**Such a class imbalance would impact model's ability to perform up to the desired standard.The proportion of images are not fairly distributed among all classes. It might not be possible to ensure equal proportion of all classes, but it is certainly important for the dataset to include good number of ultrasound images of COVID positive patients, which give enough for it to extract features and learn from them. **
+
+### Data fitness for answering research questions
+
+**(I)	Which machine learning classification algorithm works the best for diagnosing Covid-19 using medical data of patients (Lung ultrasound images) evaluated using accuracy, precision, sensitivity, F1 score, ROC Curve – AUC Score, Log loss ?**
+
+As a matter of fact, performance of a machine learning algorithm, depends upon the amount and type of data it is being used with. We have realized that our image dataset needs to have more images and data is not fairly distributed among all classes. Due to these deficiences in the dataset, it might not be able to bring forward the best performance of algorithms.So, as of know the dataset is not fit enough for getting to the right answer to this question.
+
+**(II)	Which technique helps the most in achieving the success criteria by optimizing model performance – Transfer learning, Data augmentation, Mix-up augmentation, Progressive resizing, Deep learning libraries like fastai, Hyperparameter tuning using Keras Tuner, fine tuning ?**
+
+We can identify the technique that optimizes model's performance by comparing the results after using the methods in question with the baseline model. The answer can be achieved, but for testing the true capability of these methods, the baseline model must be trained with the dataset that best fits the problem, which is not the case for us as of now.
+
+**NOTE -This week, we'd invest some more time working on image extraction, and we'd assess the dataset again to make sure it's fit for the project objective before putting it to use. **
+
+## Ethical Assessment for data collection and usage
+
+### Data Science Ethics Checklist
+
+[![Deon badge](https://img.shields.io/badge/ethics%20checklist-deon-brightgreen.svg?style=popout-square)](http://deon.drivendata.org/)
+
+## A. Data Collection
+
+- [ ] **A.1 Informed consent**: If there are human subjects, have they given informed consent, where subjects affirmatively opt-in and have a clear understanding of the data uses to which they consent?
+
+**Since COVID-Net Initiative have collected the videos from the sources, they must have incorporated this ethical principle.We have not retrieved any personal information while extracting the images and the usage is very clear as well. **
+ 
+- [ ] **A.2 Collection bias**: Have we considered sources of bias that could be introduced during data collection and survey design and taken steps to mitigate those?
+
+**The lung ultrasound videos have been collected as a part of the open source initiative, the COVID-Net Initiative. We have in turn scraped videos and extracted images from them from the 9 sources listed as a part of Covidx-US dataset. We have been concerned about bias in image extraction from the videos but we did not have much relevant information like age, gender, medical history of patients. But we have been conscious about collecting comparable number of images for each class - Covid, normal, pneumonia, others to reduce chances of class inbalance.**
+ 
+- [ ] **A.3 Limit PII exposure**: Have we considered ways to minimize exposure of personally identifiable information (PII) for example through anonymization or not collecting information that isn't relevant for analysis?
+ 
+**The dataset does not expose the personally identifiable information as it does not contain any such data about the data providers. The videos collected from all the sources do have information about patient's case, age and gender but most of those values are missing. However, The image extraction process has respected the privacy and anonymization of data providers to the full extent, retrieving only the images and their medical case : Covid, Pnuemonia,Normal or others and no sort of personal details.**
+ 
+- [ ] **A.4 Downstream bias mitigation**: Have we considered ways to enable testing downstream results for biased outcomes (e.g., collecting data on protected group status like race or gender)?
+ 
+**N/A**
+
+## B. Data Storage
+
+ - [ ] **B.1 Data security**: Do we have a plan to protect and secure data (e.g., encryption at rest and in transit, access controls on internal users and third parties, access logs, and up-to-date software)?
+ 
+**The team understands the importance of careful handling of the videos and images extracted for purpose of this project work. The team members will keep the access limited to themselves only, making sure no one except the 5 group mates get to access/use the data. The images will also be saved on google drive with access privileges to the team only.  **
+
+- [ ] **B.2 Right to be forgotten**: Do we have a mechanism through which an individual can request their personal information be removed?
+
+**The dataset does not have any personal information of individuals.**
+ 
+- [ ] **B.3 Data retention plan**: Is there a schedule or plan to delete the data after it is no longer needed?
+ 
+**The videos and images extracted will be permanently deleted from every device involved in the project work. Once the final model returns results as per the desired performance standard, it is expected to work on real world data.hence, all traces of data used will be removed.**
+
+## C. Analysis
+
+- [ ] **C.1 Missing perspectives**: Have we sought to address blindspots in the analysis through engagement with relevant stakeholders (e.g., checking assumptions and discussing implications with affected communities and subject matter experts)?
+
+**N/A**
+
+- [ ] **C.2 Dataset bias**: Have we examined the data for possible sources of bias and taken steps to mitigate or address these biases (e.g., stereotype perpetuation, confirmation bias, imbalanced classes, or omitted confounding variables)?
+ 
+**The dataset has been checked for possible sources for bias. The video metadata has records of patient's age and gender, but most of those are missing, making it hard to make sense of any possible bias on those bases. Our image dataset has 18628 images, with the class distribution as follows:- COVID - 4003, Normal - 2201 , Pnuemonia - 4449, Others - 7975 . The numbers are clearly imbalanced. We intend to train a machine learning model using these images, and the more the model sees the better. Training our model using relatively more images from a specific class than others would have an impact on it's performance too.**
+
+**To address the same, we have decided to spend some more time extracting more images from the data sources in order to make the numbers comparable in all classes.**
+
+- [ ] **C.3 Honest representation**: Are our visualizations, summary statistics, and reports designed to honestly represent the underlying data?
+ 
+**The team has focused their efforts towards representing data as it is in an honest and truthful manner in this data assessment, as the intention is to take the project in the right direction not misguide it.**
+
+- [ ] **C.4 Privacy in analysis**: Have we ensured that data with PII are not used or displayed unless necessary for the analysis?
+ 
+**There is no PII information to be used throughout the course of the project. **
+
+- [ ] **C.5 Auditability**: Is the process of generating the analysis well documented and reproducible if we discover issues in the future?
+ 
+**Every step of the project will be documented in the best possible manner including code with descriptive comments, adding notes to every method used in creating the model and deploying it so that retracing gets easier.**
+
+## D. Modeling
+
+**Modeling is an integral part of this project work, but we have not started that aspect yet, we are trying to understand and assess the data better at this point. Once we get the model ready, before finalizing it, the following ethical assessment will be carried out and the answers will be documented.**
+
+- [ ] **D.1 Proxy discrimination**: Have we ensured that the model does not rely on variables or proxies for variables that are unfairly discriminatory?
+- [ ] **D.2 Fairness across groups**: Have we tested model results for fairness with respect to different affected groups (e.g., tested for disparate error rates)?
+- [ ] **D.3 Metric selection**: Have we considered the effects of optimizing for our defined metrics and considered additional metrics?
+- [ ] **D.4 Explainability**: Can we explain in understandable terms a decision the model made in cases where a justification is needed?
+- [ ] **D.5 Communicate bias**: Have we communicated the shortcomings, limitations, and biases of the model to relevant stakeholders in ways that can be generally understood?
+
+## E. Deployment
+
+**We are still at the initial stage, but answering the checklist questions to the best of our knowledge at this point.**
+
+- [ ] **E.1 Redress**: Have we discussed with our organization a plan for response if users are harmed by the results (e.g., how does the data science team evaluate these cases and update analysis and models to prevent future harm)?
+ 
+**The objective is to have a model that returns incomparable accuracy. However the possible way in which the model can cause harm is by giving inaccurate results, the False Negatives will definitely be more harmful than the False Positives, a false positive can further be verified with a follow up laboratory test. But a false negative can harm the patient in question. One way of updating the model to prevent future harm would be presenting it more real world images for training or tweaking it's performance by trying additional methods.The redress has not been discussed in detail yet, so we would not check it off the list as of now.**
+ 
+- [ ] **E.2 Roll back**: Is there a way to turn off or roll back the model in production if necessary?
+
+**If the model's performance raise concerns and unresolvable issues, it would be taken down from it's web based implementation and it's use would be discarded.**
+
+- [ ] **E.3 Concept drift**: Do we test and monitor for concept drift to ensure the model remains fair over time?
+
+**Concept drift should not be a problem for the model as long as it is used for COVID prediction, if in future a new undiscovered variant of COVID-19 comes into picture, then the model might become unuseful. In order to keep track of it, the model's performance can be tested against our static baseline model, if it seems to be deteriorating, the same would be handled by retraining the model (on recent/new ultrasound images) and updating it so that it can be keep up with the changes.**
+
+ - [ ] **E.4 Unintended use**: Have we taken steps to identify and prevent unintended uses and abuse of the model and do we have a plan to monitor these once the model is deployed?
+ 
+ **Uninteded usage has not been a part of our discussion,so we should not be checking this off. The team would discuss identification and prevention of unintended usage and we'd update our answer.**
+
+*Data Science Ethics Checklist generated with [deon](http://deon.drivendata.org).*
+
+## Exploratory data analysis
+
+**The data assessment revealed the number of images in the dataset and distribution of images among various classes.We'll now explore aspects of the dataset in detail.**
+
+```{r}
+ glimpse(image_details)
+```
+
+###Visualizing the distribution of height of images captured
+
+```{r}
+  plot_1 <- ggplot(data = image_details)+geom_histogram(aes(x = height),fill="skyblue",col = "black") + 
+       labs(x = "Dimension : Height", y= "Number of images", title = "Distribution of height of images collected") + 
+  geom_vline(xintercept = mean(image_details$height), color ="red")
+
+ ggplotly(plot_1)
+  
+```
+**Clearly, the distribution of images' heights seem to be right skewed, with some of the images having height dimension bigger than most of the images. However the count is a little over 240 out of 18K. The mean height of all images extracted is around 600.**
+
+###Visualizing the distribution of width of images captured
+
+```{r}
+  plot_2 <- ggplot(data = image_details)+geom_histogram(aes(x = width),fill="pink",col = "black") + 
+       labs(x = "Dimension : Width", y= "Number of images", title = "Distribution of width of images collected")+
+  geom_vline(xintercept = mean(image_details$width), color = "blue")
+
+ ggplotly(plot_2)
+  
+```
+**Quite similar to the height distribution, width of images extracted also seem to follow the right skewed pattern. It seems to follow a normal distribution pattern centered around 771, A good number of images can be identified as outliers with width dimension way bigger than others.**
+
+### Identifying outliers with exceptional height and width
+
+
+```{r}
+ boxplot(image_details$height,
+main = "Visualizing height for detecting exceptional values",
+xlab = "Dimension : Height",
+col = "skyblue",
+border = "brown",
+horizontal = TRUE,
+notch = FALSE
+)
+```
+**The outliers can be visibly noted in the above box-plot. This distribution is important to be understood as the images have to be transformed to a uniform resolution i.e. height and width, having an idea about how does the resolution of images in dataset look like, would be helpful in data pre-processing.**
+
+```{r}
+
+  1.5 * IQR(image_details$height) + summary(image_details$height)[["3rd Qu."]] 
+
+```
+
+**All images having height beyond the above number have been identified as outliers.**
+
+
+```{r}
+ boxplot(image_details$width,
+main = "Visualizing width for detecting exceptional values",
+xlab = "Dimension : Weight",
+col = "pink",
+border = "brown",
+horizontal = TRUE,
+notch = FALSE
+)
+```
+**Outliers in terms of exceptional width fall on both sides, some images have width lesser than what it is like for most of the dataset while some have width way more than others.**
+
+```{r}
+  1.5 * IQR(image_details$width) + summary(image_details$width)[["3rd Qu."]] 
+
+```
+
+
+```{r}
+  summary(image_details$width)[["1st Qu."]] - 1.5 * IQR(image_details$width) 
+```
+
+**The images having width dimension lesser than 276 and more than 1140 have been identified as outliers.**
+
+### Distribution of images among the 4 classes 
+
+```{r}
+  unique(image_details$Class)
+```
+**Covid, Pneumonia, other and normal are the four classes in the dataset.**
+
+```{r}
+   plot_3 <- ggplot(data = image_details) + geom_bar(aes(x = Class), fill = "pink", colour = "black") + 
+  labs(x ="Image class", y = "Number of patients", title ="Distribution of images as per their label")
+ ggplotly(plot_3)
+```
+
+**We sensed class imbalance earlier in the data assessment but it is quite evident from the plot above.**
+
+### Visualizing the distribution of proportions of the different categories
+
+```{r}
+
+  plot_4 <- ggplot(data = image_details) + geom_bar(aes(x = Class,y = ..prop.., group = 1), fill = "pink", colour = "black",stat ="count") + 
+  labs(x ="Image class", y = "Proportion of patients", title ="Distribution of proportion of images as per their label")
+ ggplotly(plot_4)
+```
+
+**The above plot shows the proportion of images belonging to each class from the entire dataset. Around 42% of the dataset consists of images belonging to 'other' category, while only half of it belongs to 'COVID-positive' ones. These numbers must be comparable for creating a good solution.**
+
+### Visualizing number of images as per the video probe 
+
+```{r}
+
+  plot_4 <- ggplot(data = image_details) + geom_bar(aes(x = Probe), fill = "pink", colour = "black") + 
+  labs(x ="Image probe", y = "Number of images", title ="Distribution of images as per their probe")
+ ggplotly(plot_4)
+
+```
+
+**The videos available had two types of probe : Convex or Linear. Over 14K images have been extracted from videos with convex probe and the rest have been from the linear probe. We must try extracting more images from linear probed videos.**
+
+**The variable probe reveals the type of probe the video was originally captured with, those having convex probe have horizontal frames and those with a linear probe have vertical frames.**
+
+
+### Image resolution : Height and width
+
+```{r}
+   plot_5 <- ggplot(data = image_details, mapping = aes(x = height, y = width)) + geom_point(col = "purple") +
+  labs(x = "Dimension : Length", y ="Dimension : Width", title = "Image resolution")
+ 
+  ggplotly(plot_5)
+```
+**Having a glance at the above plot, the image resolutions of dataset images can be seen at a glance. Most of them have the height and width dimensions under 500 but some of them are scattered beyond that. Some have low width and a higher height an also otherwise.**
+
+```{r}
+  df =  image_details %>% group_by(Source, Class) %>% summarize(n())
+```
+
+```{r}
+ggplot(data = image_details) + geom_bar(aes(x = Source, fill = as.factor(Class))) +
+  ggtitle("Number of images extracted from each source by class")
+
+  
+```
+
+**The above plot gives a glimpse of images extracted from various sources, category wise. We can focus on the sources, we have not been able to extract much COVID class images from, like no images labelled to COVID class have been extracted from radiopaedia, UF, LITFL. Now that we'd work again on image extraction, we can focus on these sources.**
+
+
+### Displaying few images from each class for exploration
+
+
+#### Lung ultrasound images of COVID positive patients
+
+
+
+```{r, echo=FALSE, out.width= "50%", out.height = "50%"}
+knitr::include_graphics("/Users/preet/Desktop/Fourth Sem/DAB-402/Group_Project/Assessment-2/covid.png")
+```
+
+
+#### Lung ultrasound images of a normal person
+
+
+```{r, echo=FALSE, out.width= "50%", out.height = "50%"}
+knitr::include_graphics("/Users/preet/Desktop/Fourth Sem/DAB-402/Group_Project/Assessment-2/normal.png")
+```
+
+
+#### Lung ultrasound images of pneumonia patients
+
+
+```{r, echo=FALSE, out.width= "50%", out.height = "50%"}
+knitr::include_graphics("/Users/preet/Desktop/Fourth Sem/DAB-402/Group_Project/Assessment-2/pneumonia.png")
+```
+
+
+#### Lung ultrasound images of people with 'other' lung conditions
+
+
+```{r, echo=FALSE, out.width= "50%", out.height = "50%"}
+knitr::include_graphics("/Users/preet/Desktop/Fourth Sem/DAB-402/Group_Project/Assessment-2/other.png")
+```
+
+
+**It is hard to make sense of these medical images by just looking at them, hence we'd create a train a model to extract features from the images and learn to distinguish among them in the next part.**
+
+##### Github repo links
+
+Sanket - https://github.com/Sanketb77/Point-of-care-COVID_detection
+
+Simranjeet - https://github.com/01simranjeet/Point-of-care_Covid_Testing
+
+Anjali - https://github.com/Anjalib98/Point-of-care_CovidTesting
+
+Mandeep - https://github.com/Mandeep246/PointOfCare_CovidTesting
+
+Rishika - https://github.com/Rishika2412/PointOfCare_CovidTesting
+
+
+
+
+
+
+
+
+
+
+
+
+
