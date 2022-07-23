@@ -100,6 +100,12 @@ The machine learning models used for both kinds of classifiers along with the pe
 
 </div>
 
+<div align = "center">
+  
+<img width="600" alt="Screenshot 2022-07-23 at 12 22 52 AM" src="https://user-images.githubusercontent.com/86565759/180590276-76ef9841-9ec0-46e6-91bc-2ad09aadca7c.png">
+  
+</div>
+
 Finally, Xception model has been deployed as a web application using Streamlit. The application allows user to upload the images and it correctly predicts it's class.
 
 
