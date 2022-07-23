@@ -90,14 +90,13 @@ The machine learning models used for both kinds of classifiers along with the pe
 
 <div align = "center">
 
-
 <img width="600" alt="Screenshot 2022-07-21 at 4 05 12 PM" src="https://user-images.githubusercontent.com/86565759/180589613-ec84dbeb-2efd-413f-8234-712a28c40aae.png">
 
 </div>
 
 <div align = "center">
-
-<img width="520" alt="Screenshot 2022-07-23 at 12 02 42 AM" src="https://user-images.githubusercontent.com/86565759/180589758-efd262e8-e827-4dd8-86ca-9bdbf1e8bdbd.png">
+  
+<img src="https://user-images.githubusercontent.com/86565759/180589758-efd262e8-e827-4dd8-86ca-9bdbf1e8bdbd.png" width="480"/> <img src="https://user-images.githubusercontent.com/86565759/180589980-38598581-22d3-41bb-b6b5-910e945ba87a.png" width="520"/> 
 
 </div>
 
