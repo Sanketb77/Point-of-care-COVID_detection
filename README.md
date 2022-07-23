@@ -106,10 +106,35 @@ The machine learning models used for both kinds of classifiers along with the pe
   
 </div>
 
+
 Finally, Xception model has been deployed as a web application using Streamlit. The application allows user to upload the images and it correctly predicts it's class.
 
+<img align="left" width="60" height="60" src= https://user-images.githubusercontent.com/86565759/180590754-cca99cb6-ec8f-4b92-9b92-302f02c99058.jpg>
+
+## Instructions
+
+The following steps must be followed for reproducing the code :-
+
+* The python script named 'Data_Collection.ipynb' contains the code for extracting lung ultrasound videos from the 8 sources listed in the [Dataset](https://github.com/Sanketb77/Point-of-care-COVID_detection/blob/main/README.md#dataset) section. The script also contains the code for video pre-processing and extracting lung ultrasound images from the same.
+
+* The R code in 'Data_Assessment.html' can be replicated for assessing the data quality, fitness for use and for conducting an ethical assessment. The 'image_details.csv' file contains information about the images extracted. The same can be obtained by successfully exceuting the data collection script.
+
+* It is recommended to use Google Colab since training the machine learning models on thousands of images takes up alot of time and computational power.
+
+* The python scripts containing the code for classifiers can be executed using the images extracted and by placing them in the current working directory in the google drive.
+
+NOTE - All the code scripts can be found in the 'scripts' directory.
+
+## Web Application Demo
+
+The web application can be seen in working here -
 
 
+<div align = "center">
+
+https://user-images.githubusercontent.com/86565759/180590942-48c9a783-4d12-4699-8598-9b94156abfa5.mp4
+  
+</div>
 
 
 
