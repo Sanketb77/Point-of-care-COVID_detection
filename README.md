@@ -88,17 +88,23 @@ Binary and Multi classifiers have been used for the classification purpose after
 
 The machine learning models used for both kinds of classifiers along with the performance metrics are shown in the following tables. ResNet50V2 turned out to be the best binary classifier as per it's prediction performance. Whereas, Xception outperformed all models for four class classification.
 
+### <em>Binary Classification</em>
+
 <div align = "center">
 
 <img width="600" alt="Screenshot 2022-07-21 at 4 05 12 PM" src="https://user-images.githubusercontent.com/86565759/180589613-ec84dbeb-2efd-413f-8234-712a28c40aae.png">
 
 </div>
 
-
+<div align = "center">
+  
+<img src="https://user-images.githubusercontent.com/86565759/181164522-67276b52-a6f8-44f1-864f-9c30deea3f4b.png" width="490"/> <img src="https://user-images.githubusercontent.com/86565759/181165015-2a42ae8e-e3c1-426f-9ab0-5d4e7759e8e5.png"  width="490"/> 
+  
 </div>
 
+### <em>Multi-class Classification</em>
   
-<img src="https://user-images.githubusercontent.com/86565759/180591224-d1b19e85-7d77-4933-b7c0-a4e8bf7bf99d.png" width="510"/> <img src="https://user-images.githubusercontent.com/86565759/180591125-9523009c-7355-4e8b-837a-f5ede440d7d0.png" width="450"/> 
+<img src="https://user-images.githubusercontent.com/86565759/180591224-d1b19e85-7d77-4933-b7c0-a4e8bf7bf99d.png" width="510"/> <img src="https://user-images.githubusercontent.com/86565759/180591125-9523009c-7355-4e8b-837a-f5ede440d7d0.png" width="448"/> 
 
 
 Finally, Xception model has been deployed as a web application using Streamlit. The application allows user to upload the images and it correctly predicts it's class.
