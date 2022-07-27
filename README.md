@@ -124,6 +124,12 @@ The following steps must be followed for reproducing the code :-
 
 * The python scripts containing the code for classifiers can be executed using the images extracted and by placing them in the current working directory in the google drive.
 
+* The binary classification part has three scripts, the same can be executed to train and test the performance of the 6 binary classifiers on the lung ultrasound images dataset.
+
+* The file 'FourClass_Part01.ipynb' consists of ResNet50V2 and Xception trained with balanced class weights on all the four classes i.e. Covid, Normal, Pneumonia and Other.
+
+* 'FourClass_Part02.ipynb' can be executed starting from the very first cell to see techniques like 'Balanced Bagging Classifier' and 'Startification' in use in combination with Decision Tree Classifier and Logistic Regression model respectively.
+
 NOTE - All the code scripts can be found in the 'scripts' directory.
 
 <img align="left" width="60" height="60" src= https://user-images.githubusercontent.com/86565759/181162325-347bd16d-692f-4c42-b8b9-33193fdbe609.png>
