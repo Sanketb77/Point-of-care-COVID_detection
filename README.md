@@ -96,11 +96,8 @@ The machine learning models used for both kinds of classifiers along with the pe
 
 </div>
 
-<div align = "center">
-  
 <img src="https://user-images.githubusercontent.com/86565759/181164522-67276b52-a6f8-44f1-864f-9c30deea3f4b.png" width="490"/> <img src="https://user-images.githubusercontent.com/86565759/181165015-2a42ae8e-e3c1-426f-9ab0-5d4e7759e8e5.png"  width="490"/> 
-  
-</div>
+ 
 
 ### <em>Multi-class Classification</em>
   
