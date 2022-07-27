@@ -97,13 +97,8 @@ The machine learning models used for both kinds of classifiers along with the pe
 
 </div>
 
-<div align = "center">
   
-<img width="600" alt="Screenshot 2022-07-23 at 12 22 52 AM" src="https://user-images.githubusercontent.com/86565759/180590276-76ef9841-9ec0-46e6-91bc-2ad09aadca7c.png">
-  
-</div>
-  
-<img src="https://user-images.githubusercontent.com/86565759/180591224-d1b19e85-7d77-4933-b7c0-a4e8bf7bf99d.png" width="520"/> <img src="https://user-images.githubusercontent.com/86565759/180591125-9523009c-7355-4e8b-837a-f5ede440d7d0.png" width="450"/> 
+<img src="https://user-images.githubusercontent.com/86565759/180591224-d1b19e85-7d77-4933-b7c0-a4e8bf7bf99d.png" width="510"/> <img src="https://user-images.githubusercontent.com/86565759/180591125-9523009c-7355-4e8b-837a-f5ede440d7d0.png" width="450"/> 
 
 
 Finally, Xception model has been deployed as a web application using Streamlit. The application allows user to upload the images and it correctly predicts it's class.
@@ -124,10 +119,11 @@ The following steps must be followed for reproducing the code :-
 
 NOTE - All the code scripts can be found in the 'scripts' directory.
 
+<img align="left" width="60" height="60" src= https://user-images.githubusercontent.com/86565759/181162325-347bd16d-692f-4c42-b8b9-33193fdbe609.png>
+
 ## Web Application Demo
 
 The web application can be seen in working here -
-
 
 <div align = "center">
 
